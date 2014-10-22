@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+    {{ link_to_route('tasks', 'Retour aux taches') }}
     <table class="table">
         <tr>
             <th>Titre</th>

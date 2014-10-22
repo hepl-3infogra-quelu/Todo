@@ -13,9 +13,13 @@ class TasksController extends BaseController {
     }
 
     public function index () {
-        $user = Auth::user();
-        $tasks     = $user->tasks ()->where ( 'status', 0 )->orderBy ( 'created_at', 'desc' )->get ();
+        $user = Auth::user ();
+
+        $tasks = $user->tasks ()->where ( 'status', 0 )->orderBy ( 'created_at', 'desc' )->get ();
+        $tasks = $this->tagsHelper->tagsToUrl ( $tasks );
+
         $tasksDone = $user->tasks ()->where ( 'status', 1 )->get ();
+        $tasksDone = $this->tagsHelper->tagsToUrl ( $tasksDone );
 
         return View::make ( 'tasks.index', compact ( 'user', 'tasks', 'tasksDone' ) );
     }
@@ -50,19 +54,21 @@ class TasksController extends BaseController {
     }
 
     public function orderByTag ($name) {
-        $tag       = Tag::where ( [ 'name' => $name ] )->first ();
-        $tasks     =
-            $tag->tasks ()
-                ->where ( 'status', 0 )
-                ->where ( 'user_id', Auth::id () )
-                ->orderBy ( 'created_at', 'desc' )
-                ->get ();
-        $tasksDone =
-            $tag->tasks ()
-                ->where ( 'status', 1 )
-                ->where ( 'user_id', Auth::id () )
-                ->orderBy ( 'created_at', 'desc' )
-                ->get ();
+        $tag = Tag::where ( [ 'name' => $name ] )->first ();
+
+        $tasks = $tag->tasks ()
+                     ->where ( 'status', 0 )
+                     ->where ( 'user_id', Auth::id () )
+                     ->orderBy ( 'created_at', 'desc' )
+                     ->get ();
+        $tasks = $this->tagsHelper->tagsToUrl ( $tasks );
+
+        $tasksDone = $tag->tasks ()
+                         ->where ( 'status', 1 )
+                         ->where ( 'user_id', Auth::id () )
+                         ->orderBy ( 'created_at', 'desc' )
+                         ->get ();
+        $tasksDone = $this->tagsHelper->tagsToUrl ( $tasksDone );
 
         return View::make ( 'tasks.orderByTag', compact ( 'tag', 'tasks', 'tasksDone' ) );
     }
