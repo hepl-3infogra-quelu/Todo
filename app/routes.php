@@ -63,3 +63,9 @@ Route::get ( 'tasks/done/{id}', [
     'as'     => 'doneTask',
     'uses'   => 'TasksController@setDone'
 ] )->where ( 'id', '[0-9]+' );
+
+Route::get ( 'tasks/tag/{name}', [
+    'before' => 'auth',
+    'as'     => 'orderByTag',
+    'uses'   => 'TasksController@orderByTag'
+] );

@@ -13,7 +13,7 @@ class TasksController extends BaseController {
     }
 
     public function index () {
-        $user      = Auth::user ();
+        $user = Auth::user();
         $tasks     = $user->tasks ()->where ( 'status', 0 )->orderBy ( 'created_at', 'desc' )->get ();
         $tasksDone = $user->tasks ()->where ( 'status', 1 )->get ();
 
@@ -47,5 +47,23 @@ class TasksController extends BaseController {
         $task->save ();
 
         return Redirect::to ( 'tasks' );
+    }
+
+    public function orderByTag ($name) {
+        $tag       = Tag::where ( [ 'name' => $name ] )->first ();
+        $tasks     =
+            $tag->tasks ()
+                ->where ( 'status', 0 )
+                ->where ( 'user_id', Auth::id () )
+                ->orderBy ( 'created_at', 'desc' )
+                ->get ();
+        $tasksDone =
+            $tag->tasks ()
+                ->where ( 'status', 1 )
+                ->where ( 'user_id', Auth::id () )
+                ->orderBy ( 'created_at', 'desc' )
+                ->get ();
+
+        return View::make ( 'tasks.orderByTag', compact ( 'tag', 'tasks', 'tasksDone' ) );
     }
 }

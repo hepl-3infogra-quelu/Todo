@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>{{ $_ENV['SITE_NAME'] }}</title>
-<link rel="stylesheet" href="bootstrap.css">
+{{ HTML::style('bootstrap.css') }}
 </head>
 <body>
     <div class="container">
