@@ -31,14 +31,10 @@ class TasksController extends BaseController {
 
         $tags = $this->tagsHelper->getTags ( Input::only ( 'title' ) );
 
-        $newTags = [ ];
         foreach ($tags as $tag)
         {
-            $newTags[ ] = Tag::firstOrCreate ( [ 'name' => $tag ] );
-        }
-        foreach ($newTags as $newAttach)
-        {
-            $task->tags ()->attach ( $newAttach );
+            $newTag = Tag::firstOrCreate ( [ 'name' => $tag ] );
+            $task->tags ()->attach ( $newTag->id );
         }
 
         return Redirect::to ( 'tasks' );

@@ -13,6 +13,6 @@ class TagTaskTableSeeder extends Seeder {
             'name' => 'school'
         ] )->first();
 
-        $task->tags()->attach($tag->get(['id']));
+        $task->tags()->attach($tag->id);
     }
 }
