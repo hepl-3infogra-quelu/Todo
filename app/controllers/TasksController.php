@@ -26,7 +26,7 @@ class TasksController extends BaseController {
         $task = Task::create ( [
             'title'   => Input::get ( 'title' ),
             'body'    => Input::get ( 'body' ),
-            'user_id' => Auth::user ()->id
+            'user_id' => Auth::id ()
         ] );
 
         $tags = $this->tagsHelper->getTags ( Input::only ( 'title' ) );
